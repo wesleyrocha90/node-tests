@@ -52,6 +52,9 @@
 
                         cognitoUser.authenticateUser(authenticationDetails, {
                             onSuccess: function (result) {
+                                var toastHTML = `<span>Successfully logged</span>`;
+                                M.toast({html: toastHTML});
+
                                 let d = new Date();
                                 d.setDate(d.getDate() + 1);
                                 document.cookie = 'LastAuthUser' + '=' + authenticationData.Username + ';expires=' + d.toUTCString() + ';path=/'; 
@@ -69,6 +72,9 @@
                                 M.toast({html: toastHTML});
                             },
                             mfaRequired: function (codeDeliveryDetails) {
+                                var toastHTML = `<span>Check console log for details</span>`;
+                                M.toast({html: toastHTML});
+
                                 console.log('MFA');
                                 console.log(codeDeliveryDetails);
                             }
