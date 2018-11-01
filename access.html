@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-resource.min.js"></script>
     <script src="../javascripts/aws-cognito/amazon-cognito-identity.min.js"></script>
 
     <title>Hxgn Access</title>
@@ -14,7 +15,7 @@
 
     </style>
     <script>
-        angular.module('accessApp', [])
+        angular.module('accessApp', ['ngResource'])
             .controller('accessController', function ($scope, cognito) {
                 $scope.username = '';
                 $scope.password = '';
@@ -28,57 +29,33 @@
                     }
                 }
             })
-            .service('cognito', function() {
+            .factory('Login', function($resource) {
+                return $resource('http://localhost:9000/login/:username/:password',
+                    {username: '@_username', password: '@_password'});
+            })
+            .service('cognito', function(Login) {
                 return {
                     authenticate: function (username, password) {
-                        var authenticationData = {
-                            Username: username,
-                            Password: password
-                        };
-                        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+                        Login.get({username: username, password: password})
+                            .$promise.then(result => {
+                                console.log(result);
 
-                        var poolData = {
-                            UserPoolId: 'us-east-1_LrrOTS4j9',
-                            ClientId: '2loemma9viugdn9poitu1cfc03',
-                            Storage: new AmazonCognitoIdentity.CookieStorage({ domain: 'localhost', secure: true })
-                        };
-                        var cognitoUserPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-                        var userData = {
-                            Username: username,
-                            Pool: cognitoUserPool
-                        };
-                        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-                        cognitoUser.authenticateUser(authenticationDetails, {
-                            onSuccess: function (result) {
                                 var toastHTML = `<span>Successfully logged</span>`;
                                 M.toast({html: toastHTML});
 
                                 let d = new Date();
                                 d.setDate(d.getDate() + 1);
-                                document.cookie = 'LastAuthUser' + '=' + authenticationData.Username + ';expires=' + d.toUTCString() + ';path=/'; 
-                                document.cookie = 'accessToken' + '=' + result.accessToken.jwtToken + ';expires=' + d.toUTCString() + ';path=/';
-                                document.cookie = 'idToken' + '=' + result.idToken.jwtToken + ';expires=' + d.toUTCString() + ';path=/';
-                                document.cookie = 'refreshToken' + '=' + result.refreshToken.token + ';expires=' + d.toUTCString() + ';path=/'; 
-                                document.cookie = 'clockDrift' + '=' + result.clockDrift + ';expires=' + d.toUTCString() + ';path=/';
+                                document.cookie = 'LastAuthUser' + '=' + username + ';expires=' + d.toUTCString() + ';path=/'; 
+                                document.cookie = 'accessToken' + '=' + result.accessToken + ';expires=' + d.toUTCString() + ';path=/';
+                                document.cookie = 'idToken' + '=' + result.idToken + ';expires=' + d.toUTCString() + ';path=/';
+                                document.cookie = 'refreshToken' + '=' + result.refreshToken + ';expires=' + d.toUTCString() + ';path=/'; 
 
                                 let urlParams = new URLSearchParams(window.location.search);
                                 let redirectParam = urlParams.get('redirect');
                                 if (redirectParam) window.location.href = redirectParam;
-                            },
-                            onFailure: function (err) {
-                                var toastHTML = `<span>${err.message}</span>`;
-                                M.toast({html: toastHTML});
-                            },
-                            mfaRequired: function (codeDeliveryDetails) {
-                                var toastHTML = `<span>Check console log for details</span>`;
-                                M.toast({html: toastHTML});
-
-                                console.log('MFA');
-                                console.log(codeDeliveryDetails);
-                            }
-                        });
+                            }, error => {
+                                console.log(error);
+                            });
                     }
                 }
             });
