@@ -30,13 +30,12 @@
                 }
             })
             .factory('Login', function($resource) {
-                return $resource('http://localhost:9000/login/:username/:password',
-                    {username: '@_username', password: '@_password'});
+                return $resource('http://localhost:9000/login');
             })
             .service('cognito', function(Login) {
                 return {
                     authenticate: function (username, password) {
-                        Login.get({username: username, password: password})
+                        Login.save({username: username, password: password})
                             .$promise.then(result => {
                                 console.log(result);
 
