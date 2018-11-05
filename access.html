@@ -53,7 +53,9 @@
                                 let redirectParam = urlParams.get('redirect');
                                 if (redirectParam) window.location.href = redirectParam;
                             }, error => {
-                                console.log(error);
+                                let errorMsg = error.data;
+                                var toastHTML = `<span>${errorMsg}</span>`;
+                                M.toast({html: toastHTML});
                             });
                     }
                 }
