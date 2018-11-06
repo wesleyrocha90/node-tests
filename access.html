@@ -44,10 +44,10 @@
 
                                 let d = new Date();
                                 d.setDate(d.getDate() + 1);
-                                document.cookie = 'LastAuthUser' + '=' + username + ';expires=' + d.toUTCString() + ';path=/'; 
-                                document.cookie = 'accessToken' + '=' + result.accessToken + ';expires=' + d.toUTCString() + ';path=/';
-                                document.cookie = 'idToken' + '=' + result.idToken + ';expires=' + d.toUTCString() + ';path=/';
-                                document.cookie = 'refreshToken' + '=' + result.refreshToken + ';expires=' + d.toUTCString() + ';path=/'; 
+                                document.cookie = '6lgvrt5ghjm3gpqf015uor3krn.LastAuthUser' + '=' + username + ';expires=' + d.toUTCString() + ';path=/'; 
+                                document.cookie = '6lgvrt5ghjm3gpqf015uor3krn.accessToken' + '=' + result.accessToken + ';expires=' + d.toUTCString() + ';path=/';
+                                document.cookie = '6lgvrt5ghjm3gpqf015uor3krn.idToken' + '=' + result.idToken + ';expires=' + d.toUTCString() + ';path=/';
+                                document.cookie = '6lgvrt5ghjm3gpqf015uor3krn.refreshToken' + '=' + result.refreshToken + ';expires=' + d.toUTCString() + ';path=/'; 
 
                                 let urlParams = new URLSearchParams(window.location.search);
                                 let redirectParam = urlParams.get('redirect');
