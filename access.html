@@ -16,21 +16,20 @@
     </style>
     <script>
         angular.module('accessApp', ['ngResource'])
-            .controller('accessController', function ($scope, cognito) {
-                $scope.username = '';
-                $scope.password = '';
-
-                $scope.login = function (loginForm) {
-                    if (loginForm.$valid) {
-                        cognito.authenticate($scope.username, $scope.password);
-                    } else {
-                        var toastHTML = `<span>Invalid Form</span>`;
-                        M.toast({html: toastHTML});
-                    }
-                }
-            })
             .factory('Login', function($resource) {
-                return $resource('http://localhost:9000/login');
+                return $resource('http://localhost:9000/login');                    // localhost
+                // return $resource('https://dev.loophexagon.com/login');              // dev_dev
+                // return $resource('https://qa.loophexagon.com/login');               // dev_qa
+                // return $resource('https://hmg-rz.loophexagon.com/login');           //dev_hmg_rz
+                // return $resource('https://loopproject.com/login');                  // prod_prod
+                // return $resource('https://controlroom.hxgnagron.com/login');        // prod_prod_hxgn
+                // return $resource('https://cr.loopproject.com/login');               // prod_prodcr
+                // return $resource('https://cr-controlroom.hxgnagron.com/login');     // prod_prodcr_hxgn
+                // return $resource('https://prodcrgreen.loopproject.com/login');      // prod_prodcr_green
+                // return $resource('https://cr-controlroom.hxgnagron.com/login');     // prod_prodcr_green_hxgn
+                // return $resource('https://hmg-rz.loopproject.com/login');           // prod_hmg_rz
+                // return $resource('https://hmg-usm.loopproject.com/login');          // prod_hmg_usm
+                // return $resource('https://hmg-controlroom.hxgnagron.com/login');    // prod_hmg
             })
             .service('cognito', function(Login) {
                 return {
@@ -57,6 +56,19 @@
                                 var toastHTML = `<span>${errorMsg}</span>`;
                                 M.toast({html: toastHTML});
                             });
+                    }
+                }
+            })
+            .controller('accessController', function ($scope, cognito) {
+                $scope.username = '';
+                $scope.password = '';
+
+                $scope.login = function (loginForm) {
+                    if (loginForm.$valid) {
+                        cognito.authenticate($scope.username, $scope.password);
+                    } else {
+                        var toastHTML = `<span>Invalid Form</span>`;
+                        M.toast({html: toastHTML});
                     }
                 }
             });
