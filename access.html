@@ -20,7 +20,7 @@
                 return $resource('http://localhost:9000/login');                    // localhost
                 // return $resource('https://dev.loophexagon.com/login');              // dev_dev
                 // return $resource('https://qa.loophexagon.com/login');               // dev_qa
-                // return $resource('https://hmg-rz.loophexagon.com/login');           //dev_hmg_rz
+                // return $resource('https://hmg-rz.loophexagon.com/login');           // dev_hmg_rz
                 // return $resource('https://loopproject.com/login');                  // prod_prod
                 // return $resource('https://controlroom.hxgnagron.com/login');        // prod_prod_hxgn
                 // return $resource('https://cr.loopproject.com/login');               // prod_prodcr
@@ -31,9 +31,10 @@
                 // return $resource('https://hmg-usm.loopproject.com/login');          // prod_hmg_usm
                 // return $resource('https://hmg-controlroom.hxgnagron.com/login');    // prod_hmg
             })
-            .service('cognito', function(Login) {
+            .service('cognito', function(Login, $q) {
                 return {
                     authenticate: function (username, password) {
+                        var defer = $q.defer();
                         Login.save({username: username, password: password})
                             .$promise.then(result => {
                                 console.log(result);
@@ -51,21 +52,28 @@
                                 let urlParams = new URLSearchParams(window.location.search);
                                 let redirectParam = urlParams.get('redirect');
                                 if (redirectParam) window.location.href = redirectParam;
+
+                                defer.resolve(result);
                             }, error => {
                                 let errorMsg = error.data;
                                 var toastHTML = `<span>${errorMsg}</span>`;
                                 M.toast({html: toastHTML});
+
+                                defer.reject(error);
                             });
+                        return defer.promise;
                     }
                 }
             })
             .controller('accessController', function ($scope, cognito) {
                 $scope.username = '';
                 $scope.password = '';
+                $scope.logged = false;
 
                 $scope.login = function (loginForm) {
                     if (loginForm.$valid) {
-                        cognito.authenticate($scope.username, $scope.password);
+                        cognito.authenticate($scope.username, $scope.password)
+                            .then(result => $scope.logged = true, error => $scope.logged = false);
                     } else {
                         var toastHTML = `<span>Invalid Form</span>`;
                         M.toast({html: toastHTML});
@@ -76,7 +84,7 @@
 </head>
 
 <body ng-controller="accessController" style="background-color: #F1F1F1;">
-    <div class="card" style="width: 400px; margin: auto; margin-top: 100px;">
+    <div class="card" style="width: 400px; margin: auto; margin-top: 50px;">
         <div class="card-image">
             <img style="width: auto; margin: auto; padding-top: 20px;" src="../images/logo1.png" alt="image">
         </div>
@@ -91,6 +99,16 @@
                 <button class="btn blue" style="width: 100%; margin-top: 10px;">Login</button>
             </form>
         </div>
+    </div>
+
+    <div ng-if="logged" style="display: flex; justify-content: center; margin-top: 50px;">
+        <a href="http://localhost:8000">
+            <div class="card" style="display: flex; flex-direction: column; align-items: center; padding: 15px;
+                                     width: 200px; height: 120px; color: #77bc1f; border-left: 15px solid #77bc1f;">
+                <img src="https://s3.amazonaws.com/hxgn-agron-front-assets/images/access/hxgn_cr.png">
+                <div>Control Room</div>
+            </div>
+        </a>
     </div>
 </body>
 
