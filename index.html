@@ -17,19 +17,13 @@
     <script>
         angular.module('accessApp', ['ngResource'])
             .factory('Login', function($resource) {
-                return $resource('http://localhost:9000/login');                    // localhost
+                // return $resource('http://localhost:9000/login');                     // localhost
                 // return $resource('https://dev.loophexagon.com/login');              // dev_dev
                 // return $resource('https://qa.loophexagon.com/login');               // dev_qa
-                // return $resource('https://hmg-rz.loophexagon.com/login');           // dev_hmg_rz
-                // return $resource('https://loopproject.com/login');                  // prod_prod
-                // return $resource('https://controlroom.hxgnagron.com/login');        // prod_prod_hxgn
-                // return $resource('https://cr.loopproject.com/login');               // prod_prodcr
-                // return $resource('https://cr-controlroom.hxgnagron.com/login');     // prod_prodcr_hxgn
-                // return $resource('https://prodcrgreen.loopproject.com/login');      // prod_prodcr_green
-                // return $resource('https://cr-controlroom.hxgnagron.com/login');     // prod_prodcr_green_hxgn
-                // return $resource('https://hmg-rz.loopproject.com/login');           // prod_hmg_rz
-                // return $resource('https://hmg-usm.loopproject.com/login');          // prod_hmg_usm
                 // return $resource('https://hmg-controlroom.hxgnagron.com/login');    // prod_hmg
+                return $resource('https://hmg-cr-controlroom.hxgnagron.com/login'); // prod_hmgcr
+                // return $resource('https://controlroom.hxgnagron.com/login');        // prod_prod
+                // return $resource('https://cr-controlroom.hxgnagron.com/login');     // prod_prodcr
             })
             .service('cognito', function(Login, $q) {
                 return {
