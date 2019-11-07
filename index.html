@@ -17,11 +17,11 @@
     <script>
         angular.module('accessApp', ['ngResource'])
             .factory('Login', function($resource) {
-                // return $resource('http://localhost:9000/login');                     // localhost
+                return $resource('http://localhost:9000/server/login');                     // localhost
                 // return $resource('https://dev.loophexagon.com/login');              // dev_dev
                 // return $resource('https://qa.loophexagon.com/login');               // dev_qa
                 // return $resource('https://hmg-controlroom.hxgnagron.com/login');    // prod_hmg
-                return $resource('https://hmg-cr-controlroom.hxgnagron.com/login'); // prod_hmgcr
+                // return $resource('https://hmg-cr-controlroom.hxgnagron.com/login'); // prod_hmgcr
                 // return $resource('https://controlroom.hxgnagron.com/login');        // prod_prod
                 // return $resource('https://cr-controlroom.hxgnagron.com/login');     // prod_prodcr
             })
@@ -40,7 +40,7 @@
                                 d.setDate(d.getDate() + 1);
                                 // DEV
                                 document.cookie = '6lgvrt5ghjm3gpqf015uor3krn.LastAuthUser' + '=' + username + ';expires=' + d.toUTCString() + ';path=/'; 
-                                document.cookie = '6lgvrt5ghjm3gpqf015uor3krn.accessToken' + '=' + result.accessToken + ';expires=' + d.toUTCString() + ';path=/';
+                                // document.cookie = '6lgvrt5ghjm3gpqf015uor3krn.accessToken' + '=' + result.accessToken + ';expires=' + d.toUTCString() + ';path=/';
                                 document.cookie = '6lgvrt5ghjm3gpqf015uor3krn.idToken' + '=' + result.idToken + ';expires=' + d.toUTCString() + ';path=/';
                                 document.cookie = '6lgvrt5ghjm3gpqf015uor3krn.refreshToken' + '=' + result.refreshToken + ';expires=' + d.toUTCString() + ';path=/'; 
                                 // PROD
