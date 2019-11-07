@@ -17,13 +17,13 @@
     <script>
         angular.module('accessApp', ['ngResource'])
             .factory('Login', function($resource) {
-                return $resource('http://localhost:9000/server/login');                     // localhost
-                // return $resource('https://dev.loophexagon.com/login');              // dev_dev
-                // return $resource('https://qa.loophexagon.com/login');               // dev_qa
-                // return $resource('https://hmg-controlroom.hxgnagron.com/login');    // prod_hmg
-                // return $resource('https://hmg-cr-controlroom.hxgnagron.com/login'); // prod_hmgcr
-                // return $resource('https://controlroom.hxgnagron.com/login');        // prod_prod
-                // return $resource('https://cr-controlroom.hxgnagron.com/login');     // prod_prodcr
+                return $resource('http://localhost:9000/agron-core/login');                    // localhost
+                // return $resource('https://dev.loophexagon.com/agron-core/login');              // dev_dev
+                // return $resource('https://qa.loophexagon.com/agron-core/login');               // dev_qa
+                // return $resource('https://hmg-controlroom.hxgnagron.com/agron-core/login');    // prod_hmg
+                // return $resource('https://hmg-cr-controlroom.hxgnagron.com/agron-core/login'); // prod_hmgcr
+                // return $resource('https://controlroom.hxgnagron.com/agron-core/login');        // prod_prod
+                // return $resource('https://cr-controlroom.hxgnagron.com/agron-core/login');     // prod_prodcr
             })
             .service('cognito', function(Login, $q) {
                 return {
