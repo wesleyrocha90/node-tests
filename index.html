@@ -62,6 +62,7 @@
                                         document.cookie = '1g438n0cva5rp7doc68j6i3n5h.idToken' + '=' + result.idToken + ';expires=' + d.toUTCString() + ';path=/';
                                         document.cookie = '1g438n0cva5rp7doc68j6i3n5h.refreshToken' + '=' + result.refreshToken + ';expires=' + d.toUTCString() + ';path=/';
                                     }
+
                                     let urlParams = new URLSearchParams(window.location.search);
                                     let redirectParam = urlParams.get('redirect');
                                     if (redirectParam) window.location.href = redirectParam;
