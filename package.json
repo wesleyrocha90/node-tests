@@ -1,11 +1,19 @@
 {
-    "name": "access",
-    "version": "1.0.0",
-    "scripts": {
-        "prestart": "npm install",
-        "start": "http-server -a localhost -p 8888 -c-1 --cors"
-    },
-    "dependencies": {
-        "http-server": "^0.9.0"
-    }
+  "name": "agron-datalake-parquet-viewer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/ilabhexagri/local_access.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/ilabhexagri/local_access#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
 }

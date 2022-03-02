@@ -1,179 +1,39 @@
-<!DOCTYPE html>
-<html lang="en-us"
-      ng-app="accessApp">
+<html>
 
-    <head>
-        <meta http-equiv="Content-Type"
-              content="text/html; charset=utf-8">
+<head>
+    <title>Express HTML</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+</head>
 
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+<body>
+    <div style="margin:100px;">
 
-        <link rel="shortcut icon"
-              href="./images/favicon.ico">
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-resource.min.js"></script>
-
-        <script src="./javascripts//aws-cognito/amazon-cognito-identity.min.js"></script>
-
-        <title>HxGN User Access</title>
-        <style>
-
-        </style>
-        <script>
-            angular.module('accessApp', ['ngResource'])
-                .factory('Login', function ($resource) {
-                    // return $resource('http://localhost:9000/agron-core/login'); // localhost
-                    // return $resource('https://dev.loophexagon.com/agron-core/login'); // dev_dev
-                    return $resource('https://api-qa.loophexagon.com/agron-core/login'); // dev_qa
-                    // return $resource('https://hmg-controlroom.hxgnagron.com/agron-core/login'); // prod_hmg
-                    // return $resource('https://hmg-cr-controlroom.hxgnagron.com/agron-core/login'); // prod_hmgcr
-                    // return $resource('https://controlroom.hxgnagron.com/agron-core/login'); // prod_prod
-                    // return $resource('https://cr-controlroom.hxgnagron.com/agron-core/login'); // prod_prodcr
-                })
-                .service('cognito', function (Login, $q) {
-                    return {
-                        authenticate: function (username, password) {
-                            var defer = $q.defer();
-                            Login.save({
-                                username: username,
-                                password: password
-                            })
-                                .$promise.then(result => {
-                                    console.log(result);
-
-                                    var toastHTML = `<span>Successfully logged</span>`;
-                                    M.toast({
-                                        html: toastHTML
-                                    });
-
-                                    let d = new Date();
-                                    d.setDate(d.getDate() + 1);
-
-                                    // ***************************************************************
-                                    // PARA MUDAR AS CONFIGURAÇÕES DE ACESSO DOS COOKIES, ALTERA AQUI.
-                                    var _ENVIRONMENT = 'DEV';
-                                    // var _ENVIRONMENT = 'PROD';
-                                    // ***************************************************************
-
-                                    if (_ENVIRONMENT == 'DEV') {
-                                        document.cookie = '6lgvrt5ghjm3gpqf015uor3krn.LastAuthUser' + '=' + username + ';expires=' + d.toUTCString() + ';path=/';
-                                        document.cookie = '6lgvrt5ghjm3gpqf015uor3krn.idToken' + '=' + result.idToken + ';expires=' + d.toUTCString() + ';path=/';
-                                        document.cookie = '6lgvrt5ghjm3gpqf015uor3krn.refreshToken' + '=' + result.refreshToken + ';expires=' + d.toUTCString() + ';path=/';
-                                    } else if (_ENVIRONMENT == 'PROD') {
-                                        document.cookie = '1g438n0cva5rp7doc68j6i3n5h.LastAuthUser' + '=' + username + ';expires=' + d.toUTCString() + ';path=/';
-                                        document.cookie = '1g438n0cva5rp7doc68j6i3n5h.idToken' + '=' + result.idToken + ';expires=' + d.toUTCString() + ';path=/';
-                                        document.cookie = '1g438n0cva5rp7doc68j6i3n5h.refreshToken' + '=' + result.refreshToken + ';expires=' + d.toUTCString() + ';path=/';
-                                    }
-
-                                    let urlParams = new URLSearchParams(window.location.search);
-                                    let redirectParam = urlParams.get('redirect');
-                                    if (redirectParam) window.location.href = redirectParam;
-
-                                    defer.resolve(result);
-                                }, error => {
-                                    let errorMsg = error.data;
-                                    var toastHTML = `<span>${errorMsg}</span>`;
-
-                                    M.toast({
-                                        html: toastHTML
-                                    });
-
-                                    defer.reject(error);
-                                });
-                            return defer.promise;
-                        }
-                    }
-                })
-                .controller('accessController', function ($scope, cognito) {
-                    $scope.username = '';
-                    $scope.password = '';
-                    $scope.logged = false;
-
-                    $scope.login = function (loginForm) {
-                        if (loginForm.$valid) {
-                            cognito.authenticate($scope.username, $scope.password)
-                                .then(result => $scope.logged = true, error => $scope.logged = false);
-                        } else {
-                            var toastHTML = `<span>Invalid Form</span>`;
-                            M.toast({
-                                html: toastHTML
-                            });
-                        }
-                    }
-                });
-        </script>
-    </head>
-
-    <body ng-controller="accessController"
-          style="background-color: #F1F1F1;">
-        <div class="card"
-             style="width: 400px; margin: auto; margin-top: 50px;">
-            <div class="card-image">
-                <img style="width: auto; margin: auto; padding-top: 20px;"
-                     src="../images/logo1.png"
-                     alt="image">
+        <nav class="navbar navbar-inverse navbar-static-top">
+            <div class="container">
+                <a class="navbar-brand" href="/">Express HTML</a>
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                    <li>
+                        <a href="/sitemap">Sitemap</a>
+                    </li>
+                </ul>
             </div>
-            <div class="card-content">
-                <form name="loginForm"
-                      ng-submit="login(loginForm)">
-                    <label style="font-weight: bold;">Username</label>
-                    <input type="text"
-                           name="username"
-                           ng-model="username"
-                           required>
-
-                    <label style="font-weight: bold;">Password</label>
-                    <input type="password"
-                           name="current-password"
-                           ng-model="password"
-                           required>
-
-                    <button class="btn blue"
-                            style="width: 100%; margin-top: 10px;">Login</button>
-                </form>
-            </div>
+        </nav>
+        <div class="jumbotron" style="padding:40px;">
+            <h1>Hello, world!</h1>
+            <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured
+                content or information.</p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
         </div>
-
-        <div ng-if="logged"
-             style="display: flex; flex-direction: row; justify-content: center; margin-top: 50px;">
-            <!-- Control Room -->
-            <a href="http://localhost:8000"
-               style="margin: 0 10px;">
-                <div class="card"
-                     style="display: flex; flex-direction: column; align-items: center; padding: 15px;
-                                     width: 200px; height: 120px; color: #00ad68; border-left: 15px solid #00ad68;">
-                    <div style="border: 7px solid #00ad68; padding: 2px 10px; font-size: 2.5em;">CR</div>
-                    <div>Control Room</div>
-                </div>
-            </a>
-            <!-- Control Room (Novo) -->
-            <a href="http://localhost:4200"
-               style="margin: 0 10px;">
-                <div class="card"
-                     style="display: flex; flex-direction: column; align-items: center; padding: 15px;
-                                     width: 200px; height: 120px; color: #00ad68; border-left: 15px solid #00ad68;">
-                    <div style="border: 7px solid #00ad68; padding: 2px 10px; font-size: 2.5em;">CR</div>
-                    <div>Control Room (Novo)</div>
-                </div>
-            </a>
-            <!-- Auth Module -->
-            <a href="http://localhost:4200"
-               style="margin: 0 10px;">
-                <div class="card"
-                     style="display: flex; flex-direction: column; align-items: center; padding: 15px;
-                                     width: 200px; height: 120px; color: #2196F3; border-left: 15px solid #2196F3;">
-                    <div style="border: 7px solid #2196F3; padding: 2px 10px; font-size: 2.5em;">Au</div>
-                    <div>Auth Module</div>
-                </div>
-            </a>
-        </div>
-    </body>
+    </div>
+</body>
 
 </html>
